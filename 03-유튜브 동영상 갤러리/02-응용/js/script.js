@@ -20,10 +20,11 @@ $(function () {
   // imgArr.forEach(function (item, index) {
   //   console.log(item, index);
   // });
+
   // jQuery each()
   $selectVideo.each(function (index, item) {
-    // console.log(index, item);
-    $(item).css($body.css('background', `url(${imgArr[index]}) no-repeat 0 0 / cover`));
+    // 각 비디오 리스트 아이템에 배경 이미지 설정
+    $(item).css('background', `url(${imgArr[index]}) no-repeat 0 0 / cover`);
   });
 
   // console.log(imgArr[2], $selectVideo);
@@ -68,8 +69,9 @@ $(function () {
     $dim.fadeOut();
     // $videoWrap을 안 보이게
     $videoWrap.removeClass('active');
-
-    // $video이 src 값을 없애자
-    $video.attr('src', '');
+    // $video의 src 값을 없애자 --> 3초 후에 동영상 삭제
+    setTimeout(function () {
+      $video.attr('src', '');
+    }, 3000);
   });
 });

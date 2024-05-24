@@ -25,6 +25,16 @@ a:hover {
 body {
   font: 700 1rem/1.5 'Pretendard', sans-serif;
 }
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+}
 
 .dim {
   position: fixed;
@@ -57,6 +67,7 @@ body {
   opacity: 1;
   pointer-events: auto;
   user-select: auto;
+  z-index: 10;
 }
 
 .video-wrap .video,
@@ -92,6 +103,7 @@ body {
 .video-list {
   display: flex;
   gap: 20px;
+  z-index: 1;
 }
 .video-list li {
   border: 5px solid #000;
@@ -103,5 +115,5 @@ body {
   height: 250px;
   display: flex;
   justify-content: center;
-  align-content: center;
+  align-items: center;
 }

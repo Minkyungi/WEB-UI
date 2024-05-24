@@ -74,7 +74,7 @@
       });
       // dim을 클릭해도 팝업창 닫기
       // $dim.on('click', closePopup());
-      $btnClose.on('click', closePopup);
+      $btnClose.add($dim).on('click', closePopup);
 
       // 중복 코드를 함수로 정의
       function closePopup() {
