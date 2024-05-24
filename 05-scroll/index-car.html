@@ -52,6 +52,8 @@
       // 브라우저 세로 창
 
       const winHeight = $window.outerHeight();
+      const docHeight = $document.outerHeight();
+      const scrollHeight = docHeight - winHeight;
 
       $window.on('scroll', function () {
         const scrollTop = $(this).scrollTop();
