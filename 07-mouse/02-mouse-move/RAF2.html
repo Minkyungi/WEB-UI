@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request Animation Frame</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    img {
+      vertical-align: top;
+    }
+
+    body {
+      background: skyblue;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .wrap {
+      width: 100%;
+      border: 1px solid #fff;
+    }
+
+    .cat {
+      width: 258px;
+      height: 513px;
+      background: url(./img/walk.png) no-repeat 0 0;
+      animation: catRunning 1.5s infinite steps(8);
+    }
+
+    .info {
+      position: absolute;
+      left: 50%;
+      bottom: 50px;
+      transform: translateX(-50%);
+      font-size: 5vw;
+      color: #fff;
+    }
+
+    /* 고양이가 달린다 */
+    @keyframes catRunning {
+      100% {
+        background-position: -2064px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="cat"></div>
+    <div class="info">0</div>
+
+  </div>
+
+  <script>
+    const cat = document.querySelector('.cat');
+    const info = document.querySelector('.info');
+    const winWidth = window.innerWidth;
+    console.log(winWidth);
+
+    let xPos = 0;
+    let raf;
+    let isRunning = true;
+
+    function running() {
+      info.textContent = 'Running';
+      raf = requestAnimationFrame(running);
+    }
+    running();
+
+
+    // 화면을 클릭하면 멈추거나 다시 달린다.
+    window.addEventListener('click', function () {
+      if (isRunning) {
+        cancelAnimationFrame(raf);
+        cat.style.animationPlayState = 'paused';
+        info.textContent = 'Stopped';
+      } else {
+        cat.style.animationPlayState = 'running';
+        running();
+      }
+      isRunning = !isRunning;
+    })
+
+
+
+  </script>
+</body>
+
+
+</html>
