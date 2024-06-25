@@ -20,6 +20,7 @@
       position: fixed;
       top: 0;
       left: 0;
+      right: 0;
       bottom: 0;
       background: rgba(0, 0, 0, 0.7);
 
@@ -41,22 +42,27 @@
     $(function () {
       const $window = $(window);
       const $body = $('body');
-      const $loading = $('.loading');
+      let loadingHtml = `<div class="loading">
+                        <p>loading...</p>
+                        </div>`;
+
+      // loading 구조 삽입
+      $body.append(loadingHtml);
+
+      // jQuery 객체로 만들기
+      $loading = $('.loading');
 
       $window.on('load', function () {
         // 로딩 완료 후 1초 후에 사라지게
-        setTimeout(function () { }, 1000);
-        $loading.fadeOut();
-      })
-    })
+        setTimeout(function () {
+          $loading.fadeOut();
+        }, 1000);
+      });
+    });
   </script>
 </head>
 
 <body>
-  <div class="loading">
-    <p>loading...</p>
-  </div>
-
   <img src="https://media.timeout.com/images/105918414/image.jpg" alt="" />
   <img src="https://hips.hearstapps.com/hmg-prod/images/gettyimages-1136588786.jpg" alt="" />
   <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/Blackpink_Coachella_2023_02_%28cropped%29.jpg" alt="" />
