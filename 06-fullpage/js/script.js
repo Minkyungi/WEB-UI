@@ -1,82 +1,70 @@
 $(function () {
-  // 대상을 변수에 저장
-  const $window = $(window);
-  const $sideDot = $('.indicator button');
-  const $section = $('#container > section');
+  // AOS.init();
+
+  const $header = $('#header');
   const $btnTop = $('.btn-top');
 
-  // top버튼 숨기고 시작
+  // 각 영역별 aos.js를 적용할 대상
+  const $aniEl = $('[data-aos]');
+
+  // 탑버튼이 처음에는 안 보이게
   $btnTop.hide();
 
-  console.log($section);
-  // 항목별 인덱스를 활용
-  let secIdx = 0;
-
-  moveSection(secIdx);
-
-  // TOP버튼을 클릭했을 때 상단으로 이동
+  // 탭버튼을 클릭하면 화면 상단으로(첫번째 섹션으로 이동)
   $btnTop.on('click', function () {
-    secIdx = 0;
-    moveSection(secIdx);
+    $.fn.fullpage.moveTo('section1');
+    // $.fn.fullpage.silentMoveTo('section1');
   });
 
-  // 섹션의 위치값 구하기
-  console.log($section.eq(1).offset().top);
+  $('#fullpage').fullpage({
+    // * 인디케이터 커스텀
 
-  // 섹션을 이동하는 동작을 함수로 정의
-  function moveSection(index) {
-    // 인덱스를 활용해서 섹션의 위치값 구하기
-    const posTop = index * $window.outerHeight();
-    $('html,body').stop().animate(
-      {
-        scrollTop: posTop,
-      },
-      300
-    );
-    updateDot(index);
-    console.log(secIdx);
+    // 1. 사용할 요소의 이름을 지정
+    menu: '.indicator',
 
-    // Top버튼 보이게/숨기게
-    if (secIdx >= 2) {
-      $btnTop.fadeIn();
-    } else {
-      $btnTop.fadeOut();
-    }
-  }
+    // 2. 앵커(영역)의 이름 설정
+    anchors: ['section1', 'section2', 'section3', 'section4', 'footer'],
 
-  // 인디케이터를 클릭했을 때
-  $sideDot.on('click', function () {
-    secIdx = $(this).index();
+    // 3. 실제 링크에 data-menuanchor='영역이름' 적용
 
-    moveSection(secIdx);
-  });
+    // 속도조절
+    scrollingSpeed: 1000,
 
-  // 인디케이터로 업데이트 하는 함수
-  function updateDot(index) {
-    $sideDot.removeClass('on').eq(index).addClass('on');
-  }
-  // 마우스 휠 & 키보드 조작 이벤트 추가
-  $window.on('wheel keydown', function (e) {
-    if ($('html,body').is(':animated')) return;
+    // * 섹션 영역의 콘텐츠 세로 정렬
+    verticalCentered: false,
 
-    if (e.originalEvent.deltaY < 0 || e.key === 'ArrowUp') {
-      // 휠을 올리거나 위로 가는 화살표 키를 누른 경우
+    // * 슬라이더 관련
+    slidesNavigation: true,
+    slidesNavPosition: 'bottom',
 
-      // 조건을 걸어서 코드를 종료
-      if (secIdx === 0) return;
-      secIdx--;
-    } else if (e.originalEvent.deltaY > 0 || e.key === 'ArrowDown') {
-      // 휠을 내리거나 아래 화살표 키를 누른 경우
+    // 영역에 진입한 후
+    afterLoad: function (anchorLink, index) {
+      console.log('영역에 진입한 후');
+      console.log(anchorLink, index);
 
-      if (secIdx === $section.length - 1) return;
-      secIdx++;
-    }
+      // section4 영역에 진입하면 탑버튼 보이게
+      if (anchorLink === 'section4') {
+        $btnTop.fadeIn();
+      }
+      AOS.init();
+      $aniEl.addClass('aos-animate');
+    },
+    // 영역을 떠나갈 때
+    onLeave: function (index, nextIndex, direction) {
+      console.log('영역을 떠나갈 때');
+      console.log(index, nextIndex, direction);
 
-    moveSection(secIdx);
-  });
-
-  // 브라우저 창이 조정될 때
-  $window.on('resize', function () {
-    moveSection(secIdx);
+      // 밑에 영역으로 이동하면 헤더에 hide클래스 부여
+      if (direction === 'down') {
+        $header.addClass('hide');
+      } else {
+        $header.removeClass('hide');
+      }
+      // 4번 영역을 떠나가거나 마우스 휠을 올렸을 때
+      if (index == 4 || direction === 'up') {
+        $btnTop.fadeOut();
+      }
+      $aniEl.removeClass('aos-animate');
+    },
   });
 });
